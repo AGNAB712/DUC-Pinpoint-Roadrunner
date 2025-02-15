@@ -29,12 +29,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 public class Hardware {
 
     //wheel motors
-    public Motor fL, fR, rL, rR, armRotate, spool, specimenArm;
+    public Motor fL, fR, rL, rR, armRotate, spool, specimenArm, hangingArm;
     //imu and YPRA
     public YawPitchRollAngles robotOrientation;
     public IMU imu;
     public ServoEx claw;
     public ServoEx specimenClaw;
+    public Servo flipper;
     private HardwareMap hwMap;
     public static double spoolLowerBounds = 0;
     public static double spoolUpperBounds = 2000;
@@ -56,11 +57,13 @@ public class Hardware {
         rL = new Motor(hwMap, "leftBack");
         rR = new Motor(hwMap, "rightBack");
         specimenArm = new Motor(hwMap, "specimenArm");
+        hangingArm = new Motor(hwMap, "hangArm");
         armRotate = new Motor(hwMap, "arm");
         spool = new Motor(hwMap, "spool");
         imu = hwMap.get(IMU.class, "imu");
         claw = new SimpleServo(hwMap, "claw", 0, 180);
         specimenClaw = new SimpleServo(hwMap, "specimenClaw", 0, 180);
+        flipper = hwMap.get(Servo.class, "flipper");
         //INITIALIZATION
 
         //imu
@@ -73,6 +76,7 @@ public class Hardware {
         fR.setInverted(true);
         rR.setInverted(true);
         armRotate.setInverted(true);
+        hangingArm.setInverted(true);
         //claw.turnToAngle(0);
         //claw.setInverted(true);
         /*fL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -85,11 +89,13 @@ public class Hardware {
         rL.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         rR.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         specimenArm.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        hangingArm.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
 
         //init claw
         claw.turnToAngle(15);
         specimenClaw.turnToAngle(90);
+        flipper.setPosition(0);
 
         armAngles = new InterpLUT();
         armAngles.add(-10000, -61);

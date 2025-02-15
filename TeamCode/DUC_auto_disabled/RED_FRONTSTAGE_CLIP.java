@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DUC_auto;
+package org.firstinspires.ftc.teamcode.DUC_auto_disabled;
 
 import static org.firstinspires.ftc.teamcode.lib.Hardware.closeClawAngle;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.openClawAngle;
@@ -19,6 +19,7 @@ import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -28,8 +29,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Config
-@Autonomous(name = "2BLUE_BACKSTAGE_CLIP", group = "Autonomous")
-public class BLUE_BACKSTAGE_CLIP extends LinearOpMode {
+@Autonomous(name = "2RED_FRONTSTAGE_CLIP", group = "Autonomous")
+@Disabled
+public class RED_FRONTSTAGE_CLIP extends LinearOpMode {
 
     int armTickPosition = 250;
     public static int hookPosition = 1800;
@@ -37,23 +39,23 @@ public class BLUE_BACKSTAGE_CLIP extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d initialPose = new Pose2d(37, 64, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-37, -64, Math.toRadians(270));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         Claw claw = new Claw(hardwareMap);
         Spool spool = new Spool(hardwareMap);
         Arm arm = new Arm(hardwareMap);
 
-        Vector2d ascentArea = new Vector2d(-10, 15);
-        Vector2d highRung = new Vector2d(5, 28);
+        Vector2d ascentArea = new Vector2d(-10, -15);
+        Vector2d highRung = new Vector2d(-5, -28);
 
         TrajectoryActionBuilder strafeToHighRung = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(highRung, Math.toRadians(90));
+                .strafeToLinearHeading(highRung, Math.toRadians(270));
 
-        TrajectoryActionBuilder parkTier1Ascent = drive.actionBuilder(new Pose2d(-10, 28, Math.toRadians(270)))
-                .strafeTo(new Vector2d(40, 35))
-                .strafeTo(new Vector2d(40, 8))
-                .turnTo(Math.toRadians(0.1))
-                .strafeTo(new Vector2d(23, 8));
+        TrajectoryActionBuilder parkTier1Ascent = drive.actionBuilder(new Pose2d(-5, -28, Math.toRadians(270)))
+                .strafeTo(new Vector2d(-40, -35))
+                .strafeTo(new Vector2d(-40, -8))
+                .turnTo(Math.toRadians(180))
+                .strafeTo(new Vector2d(-23, -8));
 
 
 

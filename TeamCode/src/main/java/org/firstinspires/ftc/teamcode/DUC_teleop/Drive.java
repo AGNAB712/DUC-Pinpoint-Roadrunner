@@ -57,6 +57,8 @@ public class Drive extends LinearOpMode {
     ElapsedTime timerArmRotate = new ElapsedTime();
     ElapsedTime timerArmSpecimen = new ElapsedTime();
     public int specimenTargetPosition = 0;
+    public int hangingTargetPosition = 0;
+    public static double flipperPos = 0;
 
     @Override
     public void runOpMode() {
@@ -77,6 +79,7 @@ public class Drive extends LinearOpMode {
         robot.spool.resetEncoder();
         robot.armRotate.resetEncoder();
         robot.specimenArm.resetEncoder();
+        robot.hangingArm.resetEncoder();
 
 
         heading = robot.robotOrientation.getYaw(AngleUnit.DEGREES);
@@ -87,8 +90,6 @@ public class Drive extends LinearOpMode {
         GamepadEx controller2 = new GamepadEx(gamepad2);
         ButtonReader clawReader = new ButtonReader(controller2, GamepadKeys.Button.X);
         ButtonReader specimenReader = new ButtonReader(controller1, GamepadKeys.Button.X);
-        //Color sensor stuff
-
 
 
         waitForStart();
@@ -130,6 +131,21 @@ public class Drive extends LinearOpMode {
                     robot.robotOrientation.getYaw(AngleUnit.DEGREES)
             );
 
+            if (gamepad1.left_trigger > 0) {
+                if (gamepad1.dpad_up) {
+                    specimenTargetPosition = 2684;
+                    hangingTargetPosition = 2684;
+                } else if (gamepad1.dpad_left) {
+                    specimenTargetPosition = 0;
+                    hangingTargetPosition = 0;
+                } else if (gamepad1.dpad_down) {
+                    specimenTargetPosition = 2000;
+                    hangingTargetPosition = 2000;
+                } else if (gamepad1.dpad_right) {
+                    specimenTargetPosition = 1000;
+                    hangingTargetPosition = 1000;
+                }
+            }
             if (gamepad1.right_trigger > 0) {
                 precisionCoefficient = 0.25;
             } else {
@@ -139,6 +155,11 @@ public class Drive extends LinearOpMode {
                 precisionCoefficient2 = 0.5;
             } else {
                 precisionCoefficient2 = 1;
+            }
+            if (gamepad2.left_trigger > 0.5) {
+                robot.flipper.setPosition(0.725+flipperPos);
+            } else {
+                robot.flipper.setPosition(0.35);
             }
             clawReader.readValue();
             if (clawReader.wasJustReleased()) {
@@ -172,26 +193,28 @@ public class Drive extends LinearOpMode {
                 robot.spool.set(0);
             }
 
-            if(gamepad1.dpad_up || gamepad1.dpad_down){
-                if (timerArmSpecimen.milliseconds() >= intervalMS) {
-                    if (gamepad1.dpad_up) {
-                        specimenTargetPosition += (int) 100 * precisionCoefficient;
-                    } else if (gamepad1.dpad_down) {
-                        specimenTargetPosition += (int) -100 * precisionCoefficient;
+            if (gamepad1.left_trigger <= 0) { //not trying to hang
+                if (gamepad1.dpad_up || gamepad1.dpad_down) {
+                    if (timerArmSpecimen.milliseconds() >= intervalMS) {
+                        if (gamepad1.dpad_up) {
+                            specimenTargetPosition += (int) 100 * precisionCoefficient;
+                        } else if (gamepad1.dpad_down) {
+                            specimenTargetPosition += (int) -100 * precisionCoefficient;
+                        }
+                        timerArmSpecimen.reset();
                     }
-                    timerArmSpecimen.reset();
+                } else if (gamepad1.b) {
+                    specimenTargetPosition = 1300;
+                } else if (gamepad1.a) {
+                    specimenTargetPosition = 0;
+                } else if (gamepad1.y) {
+                    specimenTargetPosition = 2000;
                 }
-            } else if (gamepad1.b) {
-                specimenTargetPosition= 1500;
-            } else if (gamepad1.a) {
-                specimenTargetPosition = 0;
-            } else if (gamepad1.y) {
-                specimenTargetPosition = 2000;
             }
 
             rightStickYValue = Math.cbrt(-gamepad2.right_stick_y);
             if(rightStickYValue>0 || rightStickYValue<0){
-                if (timerArmRotate.milliseconds() >= intervalMS) {
+                if (timerArmRotate.milliseconds() >= (intervalMS * precisionCoefficient2)) {
                     if (!(rightStickYValue > 0 && armTickPosition > 3010)) {
                         armTickPosition += (int) ((int) rightStickYValue * (100 * precisionCoefficient2));
                         timerArmRotate.reset();
@@ -252,5 +275,11 @@ public class Drive extends LinearOpMode {
         robot.specimenArm.setTargetPosition(specimenTargetPosition);
         robot.specimenArm.set(1);
         robot.specimenArm.setPositionTolerance(10);
+
+        robot.hangingArm.setRunMode(Motor.RunMode.PositionControl);
+        robot.hangingArm.setPositionCoefficient(positionCoefficient);
+        robot.hangingArm.setTargetPosition(hangingTargetPosition);
+        robot.hangingArm.set(1);
+        robot.hangingArm.setPositionTolerance(10);
     }
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DUC_auto;
+package org.firstinspires.ftc.teamcode.DUC_auto_disabled;
 
 import static org.firstinspires.ftc.teamcode.lib.Hardware.closeClawAngle;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.openClawAngle;
@@ -11,7 +11,6 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -19,6 +18,7 @@ import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -29,6 +29,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Config
 @Autonomous(name = "3RED_FRONTSTAGE_PARK", group = "Autonomous")
+@Disabled
 public class RED_FRONTSTAGE_PARK extends LinearOpMode {
 
     int armTickPosition = 250;

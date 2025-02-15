@@ -53,6 +53,28 @@ import java.util.List;
 
 @Config
 public class MecanumDrive {
+
+    public double precision = 0;
+    public double precisionTime = 0;
+
+    /*public static class PrecisionController {
+
+        public class Precise implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                return false;
+            }
+        }
+
+        public Action precise() {
+            precision = 0.5;
+            precisionTime = 3;
+            return new Precise();
+        }
+    }
+
+    public static PrecisionController PC = new PrecisionController();*/
+
     public static class Params {
         // IMU orientation
         // TODO: fill in these values based on
@@ -264,6 +286,7 @@ public class MecanumDrive {
 
         private final double[] xPoints, yPoints;
 
+
         public FollowTrajectoryAction(TimeTrajectory t) {
             timeTrajectory = t;
 
@@ -289,19 +312,28 @@ public class MecanumDrive {
                 t = Actions.now() - beginTs;
             }
 
-            if (t >= timeTrajectory.duration) {
-                leftFront.setPower(0);
-                leftBack.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                return false;
-            }
-
             Pose2dDual<Time> txWorldTarget = timeTrajectory.get(t);
             targetPoseWriter.write(new PoseMessage(txWorldTarget.value()));
 
             PoseVelocity2d robotVelRobot = updatePoseEstimate();
+            Pose2d error = txWorldTarget.value().minusExp(pose);
+
+            p.put("precision", precision);
+            p.put("precisionTime", precisionTime);
+
+            if (t >= timeTrajectory.duration) {
+                if ((precision == 0 && precisionTime == 0) || (error.position.norm() < precision && robotVelRobot.linearVel.norm() < 0.5 || t >= timeTrajectory.duration + precisionTime)) {
+                    leftFront.setPower(0);
+                    leftBack.setPower(0);
+                    rightBack.setPower(0);
+                    rightFront.setPower(0);
+
+                    return false;
+                }
+
+            }
+
+
 
             PoseVelocity2dDual<Time> command = new HolonomicController(
                     PARAMS.axialGain, PARAMS.lateralGain, PARAMS.headingGain,
@@ -332,7 +364,6 @@ public class MecanumDrive {
             p.put("y", pose.position.y);
             p.put("heading (deg)", Math.toDegrees(pose.heading.toDouble()));
 
-            Pose2d error = txWorldTarget.value().minusExp(pose);
             p.put("xError", error.position.x);
             p.put("yError", error.position.y);
             p.put("headingError (deg)", Math.toDegrees(error.heading.toDouble()));
@@ -487,4 +518,6 @@ public class MecanumDrive {
                 defaultVelConstraint, defaultAccelConstraint
         );
     }
+
+
 }

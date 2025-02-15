@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DUC_auto;
+package org.firstinspires.ftc.teamcode.DUC_auto_disabled;
 
 import static org.firstinspires.ftc.teamcode.lib.Hardware.closeClawAngle;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.openClawAngle;
@@ -19,6 +19,7 @@ import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -27,6 +28,7 @@ import org.firstinspires.ftc.teamcode.PinpointDrive;
 
 @Config
 @Autonomous(name = "1RED_BACKSTAGE_MAX", group = "Autonomous")
+@Disabled
 public class RED_BACKSTAGE_MAX extends LinearOpMode {
 
     int armTickPosition = 0;

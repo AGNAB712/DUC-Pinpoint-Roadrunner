@@ -20,18 +20,16 @@ import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.PinpointDrive;
 
 @Config
-@Autonomous(name = "TEST2", group = "Autonomous")
-public class TEST_AUTO_2 extends LinearOpMode {
+@Autonomous(name = "1BLUE FRONTSTAGE MAX SPECIMEN", group = "Autonomous")
+public class BLUE_FRONTSTAGE_SPECIMEN extends LinearOpMode {
 
     int armTickPosition = 0;
     int normalArmTickPosition = 0;
@@ -46,7 +44,7 @@ public class TEST_AUTO_2 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d initialPose = new Pose2d(11, -64, Math.toRadians(270));
+        Pose2d initialPose = new Pose2d(-11, 64, Math.toRadians(270-180));
         MecanumDrive drive = new PinpointDrive(hardwareMap, initialPose);
         Spool spool = new Spool(hardwareMap);
         Claw claw = new Claw(hardwareMap);
@@ -54,38 +52,41 @@ public class TEST_AUTO_2 extends LinearOpMode {
         Arm arm = new Arm(hardwareMap);
         NormalArm normalArm = new NormalArm(hardwareMap);
         TimerActions time = new TimerActions();
+        Flipper flipper = new Flipper(hardwareMap);
 
-        TrajectoryActionBuilder trajectory0 = drive.actionBuilder(new Pose2d(11, -63.21, Math.toRadians(270.00)))
-                .strafeTo(new Vector2d(2.29, -32));
+        TrajectoryActionBuilder trajectory0 = drive.actionBuilder(new Pose2d(-11, 63.21, Math.toRadians(270.00-180))) //strafe from beginning to high rung
+                .strafeTo(new Vector2d(-2.29, 32));
 
-        TrajectoryActionBuilder trajectory1 = drive.actionBuilder(new Pose2d(2.29, -32, Math.toRadians(270.00)))
-                //.strafeTo(new Vector2d(5.29, -35.29))
-                .strafeToLinearHeading(new Vector2d(33 + xpos1, -46 + ypos1), Math.toRadians(35.00));
 
-        TrajectoryActionBuilder trajectory2 = drive.actionBuilder(new Pose2d(32 + xpos1, -46 + ypos1, Math.toRadians(35.00)))
-                .turnTo(Math.toRadians(300.00));
 
-        TrajectoryActionBuilder trajectory3 = drive.actionBuilder(new Pose2d(32 + xpos1, -46 + ypos1, Math.toRadians(310.00)))
-                .strafeToLinearHeading(new Vector2d(40 + xpos2, -46 + ypos2), Math.toRadians(40.00));
+        TrajectoryActionBuilder trajectory1 = drive.actionBuilder(new Pose2d(-2.29, 32, Math.toRadians(270.00-180))) //flipper part 1 position
+                .strafeToLinearHeading(new Vector2d(-45, 43.5), Math.toRadians(50.00-180));
 
-        TrajectoryActionBuilder trajectory4 = drive.actionBuilder(new Pose2d(40 + xpos2, -46 + ypos2, Math.toRadians(40.00)))
-                .turnTo(Math.toRadians(310.00));
+        TrajectoryActionBuilder trajectory2 = drive.actionBuilder(new Pose2d(-45, 43.5, Math.toRadians(50.00-180))) //flipper part 1 flip
+                .strafeToLinearHeading(new Vector2d(-45, 45.5), Math.toRadians(290.00-180));
 
-        TrajectoryActionBuilder beforePicking = drive.actionBuilder(new Pose2d(41 + xpos2, -46 + ypos2, Math.toRadians(310.00)))
-                .strafeToLinearHeading(new Vector2d(45, -56), Math.toRadians(90));
+        TrajectoryActionBuilder trajectory3 = drive.actionBuilder(new Pose2d(-45, 45.5, Math.toRadians(310.00-180))) //flipper part 2 position
+                .strafeToLinearHeading(new Vector2d(-53, 43.5), Math.toRadians(55.00-180));
 
-        TrajectoryActionBuilder picking = drive.actionBuilder(new Pose2d(45, -52.29, Math.toRadians(90.00)))
-                .strafeToLinearHeading(new Vector2d(45, -64), Math.toRadians(90));
+        TrajectoryActionBuilder trajectory4 = drive.actionBuilder(new Pose2d(-53, 43.5, Math.toRadians(40.00-180))) //fliper part 2 flip
+                .strafeToLinearHeading(new Vector2d(-45.5, 45.5), Math.toRadians(290.00-180));
 
-        TrajectoryActionBuilder rung = drive.actionBuilder(new Pose2d(45, -64, Math.toRadians(90.00)))
-                .strafeToLinearHeading(new Vector2d(8.29, -31.29), Math.toRadians(270));
+        TrajectoryActionBuilder beforePicking = drive.actionBuilder(new Pose2d(-45.5, 45.5, Math.toRadians(310.00-180)))
+                .strafeToLinearHeading(new Vector2d(-47, 56), Math.toRadians(90-180));
 
-        TrajectoryActionBuilder beforePickingFromRung = drive.actionBuilder(new Pose2d(3.29, -31.29, Math.toRadians(270.00)))
-                .strafeToLinearHeading(new Vector2d(45, -56), Math.toRadians(90));
+        TrajectoryActionBuilder picking = drive.actionBuilder(new Pose2d(-47, 52.29, Math.toRadians(90.00-180)))
+                .strafeToLinearHeading(new Vector2d(-47, 64), Math.toRadians(90-180));
+
+        TrajectoryActionBuilder rung = drive.actionBuilder(new Pose2d(-47, 64, Math.toRadians(90.00-180)))
+                .strafeToLinearHeading(new Vector2d(-7.75, 31.29), Math.toRadians(270-180));
+
+        TrajectoryActionBuilder beforePickingFromRung = drive.actionBuilder(new Pose2d(-7.75, 31.29, Math.toRadians(270.00-180)))
+                .strafeToLinearHeading(new Vector2d(-47, 56), Math.toRadians(90-180));
 
 
         Actions.runBlocking(claw.closeClaw());
         Actions.runBlocking(normalClaw.openClaw());
+        Actions.runBlocking(flipper.flipperInit());
 
         waitForStart();
         if (isStopRequested()) return;
@@ -94,6 +95,7 @@ public class TEST_AUTO_2 extends LinearOpMode {
                 new ParallelAction(
                         new SequentialAction(
                                 new ParallelAction(
+                                        flipper.upFlipper(),
                                         trajectory0.build(),
                                         arm.highRung()
                                 ),
@@ -102,32 +104,28 @@ public class TEST_AUTO_2 extends LinearOpMode {
                                 new SleepAction(0.25),
                                 claw.openClaw(),
                                 trajectory1.build(),
-                                time.resetTimer(),
                                 new ParallelAction(
-                                        normalArm.mid(),
+                                        new SequentialAction(
+                                                flipper.downFlipper(),
+                                                new SleepAction(0.25),
+                                                trajectory2.build()
+                                        ),
                                         arm.low()
                                 ),
-                                time.resetTimer(),
-                                spool.highBasket(),
-                                new SleepAction(0.75),
-                                normalClaw.closeClaw(),
-                                trajectory2.build(),
-                                normalClaw.openClaw(),
+                                flipper.upFlipper(),
                                 trajectory3.build(),
-                                normalClaw.closeClaw(),
+                                flipper.downFlipper(),
+                                new SleepAction(0.2),
                                 trajectory4.build(),
-                                normalClaw.openClaw(),
-                                time.resetTimer(),
-                                new ParallelAction(
-                                        spool.low(),
-                                        beforePicking.build()
-                                ),
+                                flipper.upFlipper(),
+                                beforePicking.build(),
                                 time.resetTimer(),
                                 normalArm.low(),
                                 claw.openClaw(),
                                 picking.build(),
-                                claw.closeClaw(),
                                 new SleepAction(0.1),
+                                claw.closeClaw(),
+                                new SleepAction(0.25),
                                 new ParallelAction(
                                         arm.highRung(),
                                         rung.build()
@@ -142,8 +140,9 @@ public class TEST_AUTO_2 extends LinearOpMode {
                                         beforePickingFromRung.build()
                                 ),
                                 picking.build(),
-                                claw.closeClaw(),
                                 new SleepAction(0.1),
+                                claw.closeClaw(),
+                                new SleepAction(0.25),
                                 new ParallelAction(
                                         arm.highRung(),
                                         rung.build()
@@ -158,8 +157,9 @@ public class TEST_AUTO_2 extends LinearOpMode {
                                         beforePickingFromRung.build()
                                 ),
                                 picking.build(),
-                                claw.closeClaw(),
                                 new SleepAction(0.1),
+                                claw.closeClaw(),
+                                new SleepAction(0.25),
                                 new ParallelAction(
                                         arm.highRung(),
                                         rung.build()
@@ -227,7 +227,7 @@ public class TEST_AUTO_2 extends LinearOpMode {
             }
         }
         public Action highBasket() {
-            return new Spool.HighBasket();
+            return new HighBasket();
         }
 
         public class Low implements Action {
@@ -243,7 +243,7 @@ public class TEST_AUTO_2 extends LinearOpMode {
             }
         }
         public Action low() {
-            return new Spool.Low();
+            return new Low();
         }
 
         public class KeepPosition implements Action {
@@ -258,7 +258,7 @@ public class TEST_AUTO_2 extends LinearOpMode {
             }
         }
         public Action keepPosition() {
-            return new Spool.KeepPosition();
+            return new KeepPosition();
         }
 
     }
@@ -330,6 +330,45 @@ public class TEST_AUTO_2 extends LinearOpMode {
         }
         public Action low() {
             return new Low();
+        }
+    }
+
+    public class Flipper {
+        private Servo flipper;
+
+        public Flipper(HardwareMap hardwareMap) {
+            flipper = hardwareMap.get(Servo.class, "flipper");
+        }
+        public class DownFlipper implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                flipper.setPosition(0.725);
+                return false;
+            }
+        }
+        public Action downFlipper() {
+            return new DownFlipper();
+        }
+        public class UpFlipper implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                flipper.setPosition(0.3);
+                return false;
+            }
+        }
+        public Action upFlipper() {
+            return new UpFlipper();
+        }
+
+        public class FlipperInit implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                flipper.setPosition(0);
+                return false;
+            }
+        }
+        public Action flipperInit() {
+            return new FlipperInit();
         }
     }
     public class Claw {

@@ -1,24 +1,14 @@
 package org.firstinspires.ftc.teamcode.DUC_teleop;
 
 import static org.firstinspires.ftc.teamcode.Constants.DEBUG;
-import static org.firstinspires.ftc.teamcode.Constants.clawWeightCoefficient;
-import static org.firstinspires.ftc.teamcode.lib.Hardware.armAngles;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.closeClawAngle;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.openClawAngle;
-import static org.firstinspires.ftc.teamcode.lib.Hardware.specimenLowerBounds;
-import static org.firstinspires.ftc.teamcode.lib.Hardware.specimenUpperBounds;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.spoolLowerBounds;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.spoolUpperBounds;
 
 
-import android.graphics.Color;
-import android.os.SystemClock;
-
-import androidx.core.math.MathUtils;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -32,13 +22,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.DUC_auto.openCVTest;
 import org.firstinspires.ftc.teamcode.lib.Hardware;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
