@@ -1,26 +1,15 @@
 package org.firstinspires.ftc.teamcode.DUC_teleop;
 
 //reserve for constants import
+
 import static org.firstinspires.ftc.teamcode.Constants.DEBUG;
-import static org.firstinspires.ftc.teamcode.Constants.clawWeightCoefficient;
-import static org.firstinspires.ftc.teamcode.lib.Hardware.armAngles;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.closeClawAngle;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.openClawAngle;
-import static org.firstinspires.ftc.teamcode.lib.Hardware.specimenLowerBounds;
-import static org.firstinspires.ftc.teamcode.lib.Hardware.specimenUpperBounds;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.spoolLowerBounds;
 import static org.firstinspires.ftc.teamcode.lib.Hardware.spoolUpperBounds;
 
-
-import android.graphics.Color;
-import android.os.SystemClock;
-import android.util.Size;
-
-import androidx.core.math.MathUtils;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -31,17 +20,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.lib.Hardware;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.opencv.ImageRegion;
-import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 
-@TeleOp(name="Teleop1", group="Robot")
+@TeleOp(name="OUTREACH", group="Robot")
 @Config
-public class Drive extends LinearOpMode {
+public class OutreachDrive extends LinearOpMode {
 
     Hardware robot = new Hardware();
     YawPitchRollAngles robotOrientation;
@@ -130,7 +115,7 @@ public class Drive extends LinearOpMode {
                     controller1.getRightX() * precisionCoefficient
             );
 
-            /*if (gamepad1.left_trigger > 0) {
+            if (gamepad1.left_trigger > 0) {
                 if (gamepad1.dpad_up) {
                     specimenTargetPosition = 2684;
                     hangingTargetPosition = 2684;
@@ -144,7 +129,7 @@ public class Drive extends LinearOpMode {
                     specimenTargetPosition = 1000;
                     hangingTargetPosition = 1000;
                 }
-            }*/
+            }
             if (gamepad1.right_trigger > 0) {
                 precisionCoefficient = 0.25;
             } else {
@@ -155,11 +140,11 @@ public class Drive extends LinearOpMode {
             } else {
                 precisionCoefficient2 = 0.5;
             }
-            /*if (gamepad2.left_trigger > 0.5) {
+            if (gamepad2.left_trigger > 0.5) {
                 robot.flipper.setPosition(0.725+flipperPos);
             } else {
                 robot.flipper.setPosition(0.35);
-            }*/
+            }
             clawReader.readValue();
             if (clawReader.wasJustReleased()) {
                 clawOpen = !clawOpen;
@@ -170,7 +155,7 @@ public class Drive extends LinearOpMode {
                 robot.claw.turnToAngle(closeClawAngle);
             }
 
-            /*specimenReader.readValue();
+            specimenReader.readValue();
             if (specimenReader.wasJustReleased()) {
                 specimenClawOpen = !specimenClawOpen;
             }
@@ -178,7 +163,7 @@ public class Drive extends LinearOpMode {
                 robot.specimenClaw.turnToAngle(openClawAngle);
             } else {
                 robot.specimenClaw.turnToAngle(95);
-            }*/
+            }
 
 
 
@@ -192,7 +177,7 @@ public class Drive extends LinearOpMode {
                 robot.spool.set(0);
             }
 
-            /*if (gamepad1.left_trigger <= 0) { //not trying to hang
+            if (gamepad1.left_trigger <= 0) { //not trying to hang
                 if (gamepad1.dpad_up || gamepad1.dpad_down) {
                     if (timerArmSpecimen.milliseconds() >= intervalMS) {
                         if (gamepad1.dpad_up) {
@@ -209,7 +194,7 @@ public class Drive extends LinearOpMode {
                 } else if (gamepad1.y) {
                     specimenTargetPosition = 2000;
                 }
-            }*/
+            }
 
             rightStickYValue = Math.cbrt(-gamepad2.right_stick_y);
             if(rightStickYValue>0 || rightStickYValue<0){
@@ -220,17 +205,11 @@ public class Drive extends LinearOpMode {
                     }
                 }
             } else if (gamepad2.a) {
-                /*if (robot.spool.getCurrentPosition() > (spoolLowerBounds + 50)) {
-                    robot.spool.set(-1 * precisionCoefficient2);
-                } else {
-                    robot.spool.set(0);
-                    armTickPosition = 50;
-                }*/
-                armTickPosition = 50;
+                armTickPosition= 50;
             } else if (gamepad2.y) {
                 armTickPosition = 2500;
             }
-            if (gamepad2.left_bumper && gamepad2.right_bumper) {
+            if (gamepad2.left_bumper) {
                 robot.armRotate.resetEncoder();
                 armTickPosition = 0;
 
